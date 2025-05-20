@@ -24,6 +24,7 @@ async function deleteArtifactIfExists(artifactName: string): Promise<void> {
 
 export async function run(): Promise<void> {
   const inputs = getInputs()
+
   const searchResult = await findFilesToUpload(
     inputs.searchPath,
     inputs.includeHiddenFiles
@@ -69,6 +70,9 @@ export async function run(): Promise<void> {
     if (typeof inputs.compressionLevel !== 'undefined') {
       options.compressionLevel = inputs.compressionLevel
     }
+
+    const baseUrl = process.env['ACTIONS_RESULTS_URL']
+    core.warning(`Using the Artifact Results URL ${baseUrl}`)
 
     await uploadArtifact(
       inputs.artifactName,
